@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react"
-import axios from 'axios'
+import { useState } from "react"
 
 const Button = ({ onClick, buttonnimi}) => {
   return (
@@ -44,21 +43,29 @@ const App = () => {
   const [newJob, SetNewJob] = useState('')
   const [newDifficulty, setNewDifficulty] = useState('')
   const [newFilter, setNewFilter] = useState('')
-  const [jobs ,SetJobs] = useState([])
+  const [jobs ,SetJobs] = useState([
+    {
+      nimi: 'Selainohjelmointi',
+      vaikeustaso: 10,
+      id: 1
+    },
+    {
+      nimi: 'Tietoturva',
+      vaikeustaso: 7,
+      id: 2
+    },
+    {
+      nimi: 'Käyttölittymät',
+      vaikeustaso: 2,
+      id: 3
+    },
+    {
+      nimi: 'Virtual environments',
+      vaikeustaso: 11,
+      id: 4
+    }
+  ])
   
-  const hook = () => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/api/jobit')
-      .then(response => {
-        console.log('promise fulfilled')
-        SetJobs(response.data)
-        console.log(response.data)
-      })
-  }
-
-  useEffect(hook, [])
-
   const addJob = (event) => {
     event.preventDefault()
     if (newJob === '' || newDifficulty==='') {
@@ -72,11 +79,6 @@ const App = () => {
       vaikeustaso: newDifficulty,
       id: String(jobs.length + 1)
     }
-    axios
-    .post('http://localhost:3001/api/jobit', jobObject)
-    .then(response => {
-      console.log(response)
-    })
     
 
     console.log('nappi')

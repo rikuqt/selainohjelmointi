@@ -45,7 +45,7 @@ const App = () => {
   const [newDifficulty, setNewDifficulty] = useState('')
   const [newFilter, setNewFilter] = useState('')
   const [jobs ,SetJobs] = useState([])
-  
+ 
   const hook = () => {
     console.log('effect')
     axios
@@ -53,12 +53,11 @@ const App = () => {
       .then(response => {
         console.log('promise fulfilled')
         SetJobs(response.data)
-        console.log(response.data)
       })
   }
-
+  
   useEffect(hook, [])
-
+  
   const addJob = (event) => {
     event.preventDefault()
     if (newJob === '' || newDifficulty==='') {
@@ -76,9 +75,9 @@ const App = () => {
     .post('http://localhost:3001/api/jobit', jobObject)
     .then(response => {
       console.log(response)
+      console.log('jee')
     })
     
-
     console.log('nappi')
       SetJobs(jobs.concat(jobObject))  // luodaan kopio listasta ja lisätään kopioituun listaan uusi olio
       SetNewJob('')
