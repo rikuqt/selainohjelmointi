@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-const baseUrl = 'https://selainohjelmointi-backend.onrender.com/api/persons'
 
 const Filter = ({filter, handleFilterChange}) => {
   return (
@@ -27,15 +26,11 @@ const PersonForm = ({addName, newName, handleNameChange, newNumber, handleNumber
   )
 }
 
-const Persons = ({ del, person }) => {
+const Persons = ({person}) => {
   return (
-    <li>
-      {person.name} {person.number} 
-      <button onClick={() => del(person.id)}>delete</button>
-    </li>
+    <li>{person.name} {person.number}</li>
   )
 }
-
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -46,7 +41,7 @@ const App = () => {
   const hook = () => {
     console.log('effect')
     axios
-      .get(baseUrl)
+      .get('http://localhost:3001/persons')
       .then(response => {
         console.log('promise fulfilled')
         setPersons(response.data)
@@ -70,7 +65,7 @@ const App = () => {
         id: String(persons.length + 1)
       }
         axios
-      .post(baseUrl, personObject)
+      .post('http://localhost:3001/persons', personObject)
       .then(response => {
         console.log(response)
       })
@@ -98,21 +93,6 @@ const App = () => {
     setNewFilter(event.target.value)
   }
 
-  const handleDelete = (id) => {
-    console.log(`Delete pressed for: ${id}`)
-    if (window.confirm("Do you really want delete this?")) {
-      axios
-      .delete(`https://selainohjelmointi-backend.onrender.com/api/persons/${id}`)
-      .then(response => {
-        console.log(response)
-      })
-
-      window.open('delete succesfull');
-    }
-    
-  }
-  
-
   const personsToShow = newFilter
     ? persons.filter((person) =>
         person.name.toLowerCase().includes(newFilter.toLowerCase())
@@ -129,7 +109,7 @@ const App = () => {
       <h2>Numbers</h2>
       <ul>
         {personsToShow.map(person =>
-          <Persons key={person.id} person={person} del={handleDelete}/>
+          <Persons key={person.id} person={person} />
         )}
       </ul>
     </div>
